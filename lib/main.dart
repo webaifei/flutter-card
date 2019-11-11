@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:card_xiaomei/ui/page/Login.dart';
 import 'package:card_xiaomei/ui/page/Home.dart';
+import 'package:card_xiaomei/ui/page/SelectCard.dart';
+import 'package:card_xiaomei/ui/page/AddCard.dart';
 
 void main() => runApp(MyApp());
 
@@ -14,7 +16,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: Colors.white,
       ),
-      home: HomePage(),
+      home: LoginPage(),
     );
   }
 }

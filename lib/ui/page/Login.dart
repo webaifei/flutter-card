@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:card_xiaomei/style/StyleUtils.dart';
+import 'package:card_xiaomei/ui/widget/Button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -71,7 +72,7 @@ class _LoginPageState extends State<LoginPage> {
                   Padding(
                     padding: const EdgeInsets.only(top: 8),
                     child: SU.getText(
-                        "51卡百科", SU.color333, SU.font20, FontWeight.bold),
+                        "TK卡百科", SU.color333, SU.font20, FontWeight.bold),
                   ),
                   Container(
                     width: double.infinity,
@@ -174,7 +175,12 @@ class _LoginPageState extends State<LoginPage> {
                             height: 0,
                           ),
                           // 登录按钮
-                          new LoginButton(),
+                          Padding(
+                            padding: EdgeInsets.only(top: ScreenUtil.instance.setHeight(84)),
+                            child: new Button(
+                              text: "登 录",
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -242,37 +248,3 @@ class _LoginPageState extends State<LoginPage> {
   }
 }
 
-class LoginButton extends StatelessWidget {
-  const LoginButton({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(top: ScreenUtil.instance.setHeight(86)),
-      child: Material(
-        color: SU.colorWarning,
-        borderRadius: BorderRadius.circular(80),
-        child: InkWell(
-          onTap: () {
-            print('click');
-          },
-          child: Container(
-            width: ScreenUtil.instance.setWidth(630),
-            height: ScreenUtil.instance.setHeight(80),
-            child: Center(
-              child: Text(
-                "登  录",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: SU.font17,
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
