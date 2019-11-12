@@ -10,11 +10,28 @@
   - [ ] 添加新卡页
   - [ ] 卡列表
 - 状态管理
-  - [ ] InheritedWidget, InheritedNotifier, InheritedModel
+  - [x] InheritedWidget
+      ```
+      /// 依赖InheritedWidget 类来实现
+      /// 1. 需要持有共享状态的组件继承InheritedWidget
+      /// 2. 提供一个获取该组件实例的静态方法，同时也可以提供共享状态 CRUD 操作
+      /// 3. 在子组件中通过静态方法获取到当前子组件中的祖先组件实例 从而获取共享状态和对应操作
+      ```
+  - [ ] InheritedNotifier, InheritedModel
   - [ ] provider
+  
+  > 无状态、短时状态以及应用级状态
+  
+  
 
 - 网络请求
   - [ ] dio
+  
+  
+
+  ## 其他
+  1. 可以使用IconData来自定义自己的Icon（需要字体库）可以结合阿里的Iconfont
+    
 
 
 

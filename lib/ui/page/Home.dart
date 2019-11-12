@@ -1,7 +1,12 @@
-import 'package:card_xiaomei/ui/page/AddCard.dart';
 import 'package:flutter/material.dart';
-import 'package:card_xiaomei/style/StyleUtils.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:scoped_model/scoped_model.dart';
+
+import 'package:card_xiaomei/model/home_model_entity.dart';
+
+import 'package:card_xiaomei/ui/page/AddCard.dart';
+import 'package:card_xiaomei/style/StyleUtils.dart';
+import 'package:card_xiaomei/model/BankCardModel.dart';
 
 /// 首页
 class HomePage extends StatefulWidget {
@@ -10,112 +15,149 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  HomeModelEntity homeModelEntity;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    homeModelEntity = HomeModelEntity.of(context);
+    homeModelEntity.fetchCardList();
+    print("inistate");
+  }
+
   @override
   Widget build(BuildContext context) {
     ScreenUtil.instance = ScreenUtil(width: 750, height: 1334)..init(context);
-
+    print("build");
     return Scaffold(
-      drawer: Drawer(
-        child: ListView(
-          children: <Widget>[
-            DrawerHeader(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  // 不同状态判断
-                  new ClipRRect(
-                    child: Image.network(
-                      "https://m.360buyimg.com/mobilecms/s700x280_jfs/t1/104058/13/1568/77228/5dc23940E65ccd39a/cd1214a1c1dbdde6.jpg!cr_1125x445_0_171!q70.jpg.dpg",
-                      fit: BoxFit.cover,
-                      width: ScreenUtil.instance.setWidth(110),
-                      height: ScreenUtil.instance.setWidth(110),
-                    ),
-                    borderRadius: BorderRadius.circular(
-                        ScreenUtil.instance.setWidth(110)),
-                  ),
-                  Padding(
-                    padding:
-                        EdgeInsets.only(top: ScreenUtil.instance.setHeight(30)),
-                    child: SU.getText(
-                        "立即登录", SU.color333, SU.font17, FontWeight.bold),
-                  )
-                ],
-              ),
-            ),
-            ListTile(
-              leading: Image.asset(
-                "assets/images/用户协议.png",
-                width: ScreenUtil.instance.setWidth(36),
-                height: ScreenUtil.instance.setHeight(36),
-              ),
-              title: SU.getText("用户协议", SU.color333, SU.font14),
-              onTap: () {
-                print("xieyi");
-              },
-            ),
-            ListTile(
-              leading: Image.asset(
-                "assets/images/隐私协议.png",
-                width: ScreenUtil.instance.setWidth(36),
-                height: ScreenUtil.instance.setHeight(36),
-              ),
-              title: SU.getText("隐私协议", SU.color333, SU.font14),
-              onTap: () {
-                print("xieyi");
-              },
-            ),
-            ListTile(
-              leading: Image.asset(
-                "assets/images/我要反馈.png",
-                width: ScreenUtil.instance.setWidth(36),
-                height: ScreenUtil.instance.setHeight(36),
-              ),
-              title: SU.getText("我要反馈", SU.color333, SU.font14),
-              onTap: () {
-                print("xieyi");
-              },
-            ),
-            ListTile(
-              leading: Image.asset(
-                "assets/images/关于我们.png",
-                width: ScreenUtil.instance.setWidth(36),
-                height: ScreenUtil.instance.setHeight(36),
-              ),
-              title: SU.getText("关于我们", SU.color333, SU.font14),
-              onTap: () {
-                print("xieyi");
-              },
-            ),
-            ListTile(
-              leading: Image.asset(
-                "assets/images/退出账号.png",
-                width: ScreenUtil.instance.setWidth(36),
-                height: ScreenUtil.instance.setHeight(36),
-              ),
-              title: SU.getText("退出账号", SU.color333, SU.font14),
-              onTap: () {
-                print("xieyi");
-              },
-            )
-          ],
-        ),
-      ),
+      drawer: new DrawerPanel(),
       appBar: AppBar(
-        title: SU.getText("卡小秘"),
+        title: ScopedModelDescendant<HomeModelEntity>(
+            builder: (context, child, model) => SU.getText(model.title)),
       ),
-      body: Container(
-        child: Column(
-          children: <Widget>[
-            // 无卡
-            new CardPanel(
-              child: new NoCard(),
-            ),
-            new CardPanel(
-              colors: [Color(0xffe7d889), Color(0xffe1c739)],
-              child: new BankCard(),
-            ),
-          ],
+      body: ScopedModelDescendant<HomeModelEntity>(
+        builder: (context, child, model) => Container(
+          child: Column(
+            children: buildCardList(context, model),
+          ),
         ),
+      ),
+    );
+  }
+
+  // 获取卡列表视图
+  List<Widget> buildCardList(BuildContext context, HomeModelEntity model) {
+    List<Widget> list = [
+      new CardPanel(
+        child: new NoCard(),
+      ),
+    ];
+    // 遍历cardlist  添加卡片
+    model.cardList?.forEach((item) {
+      print(item);
+      list.insert(
+        0,
+        new CardPanel(
+          colors: [Color(0xffe7d889), Color(0xffe1c739)],
+          child: new BankCard(card: item),
+        ),
+      );
+    });
+
+    return list;
+  }
+}
+
+class DrawerPanel extends StatelessWidget {
+  const DrawerPanel({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      child: ListView(
+        children: <Widget>[
+          DrawerHeader(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                // 不同状态判断
+                new ClipRRect(
+                  child: Image.network(
+                    "https://m.360buyimg.com/mobilecms/s700x280_jfs/t1/104058/13/1568/77228/5dc23940E65ccd39a/cd1214a1c1dbdde6.jpg!cr_1125x445_0_171!q70.jpg.dpg",
+                    fit: BoxFit.cover,
+                    width: ScreenUtil.instance.setWidth(110),
+                    height: ScreenUtil.instance.setWidth(110),
+                  ),
+                  borderRadius:
+                      BorderRadius.circular(ScreenUtil.instance.setWidth(110)),
+                ),
+                Padding(
+                  padding:
+                      EdgeInsets.only(top: ScreenUtil.instance.setHeight(30)),
+                  child: SU.getText(
+                      "立即登录", SU.color333, SU.font17, FontWeight.bold),
+                )
+              ],
+            ),
+          ),
+          ListTile(
+            leading: Image.asset(
+              "assets/images/用户协议.png",
+              width: ScreenUtil.instance.setWidth(36),
+              height: ScreenUtil.instance.setHeight(36),
+            ),
+            title: SU.getText("用户协议", SU.color333, SU.font14),
+            onTap: () {
+              print("xieyi");
+            },
+          ),
+          ListTile(
+            leading: Image.asset(
+              "assets/images/隐私协议.png",
+              width: ScreenUtil.instance.setWidth(36),
+              height: ScreenUtil.instance.setHeight(36),
+            ),
+            title: SU.getText("隐私协议", SU.color333, SU.font14),
+            onTap: () {
+              print("xieyi");
+            },
+          ),
+          ListTile(
+            leading: Image.asset(
+              "assets/images/我要反馈.png",
+              width: ScreenUtil.instance.setWidth(36),
+              height: ScreenUtil.instance.setHeight(36),
+            ),
+            title: SU.getText("我要反馈", SU.color333, SU.font14),
+            onTap: () {
+              print("xieyi");
+            },
+          ),
+          ListTile(
+            leading: Image.asset(
+              "assets/images/关于我们.png",
+              width: ScreenUtil.instance.setWidth(36),
+              height: ScreenUtil.instance.setHeight(36),
+            ),
+            title: SU.getText("关于我们", SU.color333, SU.font14),
+            onTap: () {
+              print("xieyi");
+            },
+          ),
+          ListTile(
+            leading: Image.asset(
+              "assets/images/退出账号.png",
+              width: ScreenUtil.instance.setWidth(36),
+              height: ScreenUtil.instance.setHeight(36),
+            ),
+            title: SU.getText("退出账号", SU.color333, SU.font14),
+            onTap: () {
+              print("xieyi");
+            },
+          )
+        ],
       ),
     );
   }
@@ -124,6 +166,7 @@ class _HomePageState extends State<HomePage> {
 class BankCard extends StatelessWidget {
   const BankCard({
     Key key,
+    @required BankCardModel card,
   }) : super(key: key);
 
   @override
