@@ -32,7 +32,6 @@ class MyApp extends StatelessWidget {
             primaryColor: Colors.white,
           ),
           home: HomePage(),
-//            home: InheritedWidgetDemo(),
           routes: {"selectCard": (context) => SelectCardPage()},
           onGenerateRoute: Router.generateRoute),
     );

@@ -1,17 +1,29 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 
 class API {
   static BaseOptions baseOptions = new BaseOptions(
       receiveTimeout: 10 * 1000,
-//      baseUrl: "https://raw.githubusercontent.com",
-      baseUrl: "http://192.168.1.8:8080",
+      baseUrl: "https://raw.githubusercontent.com/webaifei/flutter-card/master",
       headers: {
         "token": "" // 如何处理
       });
-  static Dio _instance = new Dio(baseOptions);
+  static Dio _instance;
   static Dio getInstance() {
     if (_instance == null) {
-      return new Dio(baseOptions);
+      _instance = new Dio(baseOptions);
+      // TODO: 根据环境 添加logger
+      _instance.interceptors
+        ..add(LogInterceptor(
+            requestBody: true,
+            responseBody: true,
+            requestHeader: false,
+            responseHeader: false))
+        ..add(InterceptorsWrapper(onResponse: (Response response) async {
+          return jsonDecode(response.toString());
+        }));
     }
     return _instance;
   }

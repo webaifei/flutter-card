@@ -1,7 +1,11 @@
 import 'package:card_xiaomei/common/API.dart';
 import 'package:card_xiaomei/common/constants.dart';
+import 'package:card_xiaomei/common/setupLocator.dart';
 import 'package:card_xiaomei/model/Bank.dart';
+import 'package:card_xiaomei/model/BankCardModel.dart';
 import 'package:card_xiaomei/model/bank_list_entity.dart';
+import 'package:card_xiaomei/model/home_model_entity.dart';
+import 'package:card_xiaomei/ui/page/Home.dart';
 import 'package:card_xiaomei/ui/page/SelectCard.dart';
 import 'package:card_xiaomei/ui/widget/Button.dart';
 import 'package:dio/dio.dart';
@@ -19,6 +23,7 @@ enum PICKER_TYPE {
 
 /// 添加卡片
 class AddCardPage extends StatefulWidget {
+  HomeModelEntity homeModelEntity = locator.get<HomeModelEntity>();
   @override
   _AddCardPageState createState() => _AddCardPageState();
 }
@@ -49,7 +54,7 @@ class _AddCardPageState extends State<AddCardPage> {
 
   @override
   Widget build(BuildContext context) {
-    print("build");
+    print("----build----");
     ScreenUtil.instance = ScreenUtil(width: 750, height: 1334)..init(context);
 
     return Scaffold(
@@ -192,8 +197,11 @@ class _AddCardPageState extends State<AddCardPage> {
 //        )
 //      );
       // fetch api
-      await API.addCard(res["data"]);
+      Response cardInfo = await API.addCard(res["data"]);
       // 更新到state
+      BankCardModel bankCardModel =
+          BankCardModel.fromJson(cardInfo.data["data"]);
+      widget.homeModelEntity.addCard(bankCardModel);
       // 返回主页
       Navigator.of(context).pop();
     } catch (err) {
@@ -324,6 +332,9 @@ class _AddCardPageState extends State<AddCardPage> {
   }
 }
 
+/// 输入组价 怎么实现 双向绑定
+/// 1. 组件内部的修改 通知到外部
+/// 2. 外部的修改 通知到内部
 class Input extends StatefulWidget {
   Input(
       {Key key,
@@ -374,7 +385,6 @@ class _InputState extends State<Input> {
 
   @override
   Widget build(BuildContext context) {
-    print("textfiled build");
     return Container(
       height: ScreenUtil.instance.setHeight(98),
       decoration: BoxDecoration(
@@ -397,17 +407,28 @@ class _InputState extends State<Input> {
             ),
           ),
           Expanded(
-            child: TextField(
-              controller: _textEditingController,
-              keyboardType: widget.keyboardType,
+            child: GestureDetector(
               onTap: widget.onTap,
-              style: TextStyle(
-                color: SU.color333,
-                fontSize: SU.font16,
-              ),
-              readOnly: widget.readOnly,
-              decoration: InputDecoration(
-                  border: InputBorder.none, hintText: widget.hintText),
+              child: widget.readOnly
+                  ? Text(
+                      widget.inputValue != ""
+                          ? widget.inputValue
+                          : widget.hintText,
+                      style: TextStyle(
+                        color: SU.color333,
+                        fontSize: SU.font16,
+                      ),
+                    )
+                  : TextField(
+                      controller: _textEditingController,
+                      keyboardType: widget.keyboardType,
+                      style: TextStyle(
+                        color: SU.color333,
+                        fontSize: SU.font16,
+                      ),
+                      decoration: InputDecoration(
+                          border: InputBorder.none, hintText: widget.hintText),
+                    ),
             ),
           ),
           widget.suffix != null ? widget.suffix : SizedBox.shrink()
