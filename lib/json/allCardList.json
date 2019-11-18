@@ -1,0 +1,119 @@
+{
+  "code": 1,
+  "msg": "ok",
+  "data": {
+    "list": [{
+      "cardId": "98989we",
+      "logo": "https://img.51credit.com/credit/upload/Image/zltp/xykky/gd/2016/05/30/1_265171.jpg",
+      "bankName": "中信银行",
+      "title": "YOUNG卡白色青年版",
+      "type": "金卡",
+      "payDay": "15",
+      "cardNum": "6548   ****   ****   8888",
+      "rights": [
+        "海底捞50元购100元电子权益",
+        "境外消费2%返现"
+      ]
+    },
+      {
+        "cardId": "98989we",
+        "logo": "https://img.51credit.com/credit/upload/Image/zltp/xykky/gd/2016/05/30/1_265171.jpg",
+        "bankName": "光大银行",
+        "title": "YOUNG卡白色青年版",
+        "type": "银卡",
+        "payDay": "13",
+        "cardNum": "6548   ****   ****   8888",
+        "rights": [
+          "海底捞50元购100元电子权益",
+          "境外消费2%返现"
+        ]
+      },{
+        "cardId": "98989we",
+        "logo": "https://img.51credit.com/credit/upload/Image/zltp/xykky/gd/2016/05/30/1_265171.jpg",
+        "bankName": "光大银行",
+        "title": "YOUNG卡白色青年版",
+        "type": "银卡",
+        "payDay": "13",
+        "cardNum": "6548   ****   ****   8888",
+        "rights": [
+          "海底捞50元购100元电子权益",
+          "境外消费2%返现"
+        ]
+      },{
+        "cardId": "98989we",
+        "logo": "https://img.51credit.com/credit/upload/Image/zltp/xykky/gd/2016/05/30/1_265171.jpg",
+        "bankName": "光大银行",
+        "title": "YOUNG卡白色青年版",
+        "type": "银卡",
+        "payDay": "13",
+        "cardNum": "6548   ****   ****   8888",
+        "rights": [
+          "海底捞50元购100元电子权益",
+          "境外消费2%返现"
+        ]
+      },{
+        "cardId": "98989we",
+        "logo": "https://img.51credit.com/credit/upload/Image/zltp/xykky/gd/2016/05/30/1_265171.jpg",
+        "bankName": "光大银行",
+        "title": "YOUNG卡白色青年版",
+        "type": "银卡",
+        "payDay": "13",
+        "cardNum": "6548   ****   ****   8888",
+        "rights": [
+          "海底捞50元购100元电子权益",
+          "境外消费2%返现"
+        ]
+      },{
+        "cardId": "98989we",
+        "logo": "https://img.51credit.com/credit/upload/Image/zltp/xykky/gd/2016/05/30/1_265171.jpg",
+        "bankName": "光大银行",
+        "title": "YOUNG卡白色青年版",
+        "type": "银卡",
+        "payDay": "13",
+        "cardNum": "6548   ****   ****   8888",
+        "rights": [
+          "海底捞50元购100元电子权益",
+          "境外消费2%返现"
+        ]
+      },{
+        "cardId": "98989we",
+        "logo": "https://img.51credit.com/credit/upload/Image/zltp/xykky/gd/2016/05/30/1_265171.jpg",
+        "bankName": "光大银行",
+        "title": "YOUNG卡白色青年版",
+        "type": "银卡",
+        "payDay": "13",
+        "cardNum": "6548   ****   ****   8888",
+        "rights": [
+          "海底捞50元购100元电子权益",
+          "境外消费2%返现"
+        ]
+      },{
+        "cardId": "98989we",
+        "logo": "https://img.51credit.com/credit/upload/Image/zltp/2017/05/04/1_273900.jpg",
+        "bankName": "光大银行",
+        "title": "YOUNG卡白色青年版",
+        "type": "银卡",
+        "payDay": "13",
+        "cardNum": "6548   ****   ****   8888",
+        "rights": [
+          "海底捞50元购100元电子权益",
+          "境外消费2%返现"
+        ]
+      },{
+        "cardId": "98989we",
+        "logo": "https://p.51credit.com/bos/ka_img/card/2019/3/4/1551682585758.jpg",
+        "bankName": "光大银行",
+        "title": "YOUNG卡白色青年版",
+        "type": "银卡",
+        "payDay": "13",
+        "cardNum": "6548   ****   ****   8888",
+        "rights": [
+          "海底捞50元购100元电子权益",
+          "境外消费2%返现"
+        ]
+      }
+
+    ]
+
+  }
+}

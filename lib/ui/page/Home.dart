@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -8,37 +9,44 @@ import 'package:card_xiaomei/ui/page/AddCard.dart';
 import 'package:card_xiaomei/style/StyleUtils.dart';
 import 'package:card_xiaomei/model/BankCardModel.dart';
 
+import 'package:card_xiaomei/common/setupLocator.dart';
+
 /// 首页
 class HomePage extends StatefulWidget {
+  HomeModelEntity homeModelEntity = locator.get<HomeModelEntity>();
+
+  HomePage();
+
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  HomeModelEntity homeModelEntity;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    homeModelEntity = HomeModelEntity.of(context);
-    homeModelEntity.fetchCardList();
-    print("inistate");
+    widget.homeModelEntity.fetchCardList();
   }
 
   @override
   Widget build(BuildContext context) {
     ScreenUtil.instance = ScreenUtil(width: 750, height: 1334)..init(context);
-    print("build");
-    return Scaffold(
-      drawer: new DrawerPanel(),
-      appBar: AppBar(
-        title: ScopedModelDescendant<HomeModelEntity>(
-            builder: (context, child, model) => SU.getText(model.title)),
-      ),
-      body: ScopedModelDescendant<HomeModelEntity>(
-        builder: (context, child, model) => Container(
-          child: Column(
-            children: buildCardList(context, model),
+    return ScopedModel<HomeModelEntity>(
+      model: widget.homeModelEntity,
+      child: Scaffold(
+        drawer: new DrawerPanel(),
+        appBar: AppBar(
+          title: ScopedModelDescendant<HomeModelEntity>(
+              builder: (context, child, model) => SU.getText(model.title)),
+        ),
+        body: ScopedModelDescendant<HomeModelEntity>(
+          builder: (context, child, model) => SingleChildScrollView(
+            child: Container(
+              child: Column(
+                children: buildCardList(context, model),
+              ),
+            ),
           ),
         ),
       ),
@@ -47,6 +55,7 @@ class _HomePageState extends State<HomePage> {
 
   // 获取卡列表视图
   List<Widget> buildCardList(BuildContext context, HomeModelEntity model) {
+    print(model.cardList);
     List<Widget> list = [
       new CardPanel(
         child: new NoCard(),
@@ -54,7 +63,6 @@ class _HomePageState extends State<HomePage> {
     ];
     // 遍历cardlist  添加卡片
     model.cardList?.forEach((item) {
-      print(item);
       list.insert(
         0,
         new CardPanel(
@@ -83,21 +91,32 @@ class DrawerPanel extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 // 不同状态判断
-                new ClipRRect(
-                  child: Image.network(
-                    "https://m.360buyimg.com/mobilecms/s700x280_jfs/t1/104058/13/1568/77228/5dc23940E65ccd39a/cd1214a1c1dbdde6.jpg!cr_1125x445_0_171!q70.jpg.dpg",
-                    fit: BoxFit.cover,
-                    width: ScreenUtil.instance.setWidth(110),
-                    height: ScreenUtil.instance.setWidth(110),
+                Hero(
+                  tag: "avatar",
+                  child: new ClipRRect(
+                    child: CachedNetworkImage(
+                      imageUrl:
+                          "https://m.360buyimg.com/mobilecms/s700x280_jfs/t1/104058/13/1568/77228/5dc23940E65ccd39a/cd1214a1c1dbdde6.jpg!cr_1125x445_0_171!q70.jpg.dpg",
+                      fit: BoxFit.cover,
+                      width: ScreenUtil.instance.setWidth(110),
+                      height: ScreenUtil.instance.setWidth(110),
+                      placeholder: (context, url) => new Loading(),
+                      errorWidget: (context, url, error) => Icon(Icons.error),
+                    ),
+                    borderRadius: BorderRadius.circular(
+                        ScreenUtil.instance.setWidth(110)),
                   ),
-                  borderRadius:
-                      BorderRadius.circular(ScreenUtil.instance.setWidth(110)),
                 ),
                 Padding(
                   padding:
                       EdgeInsets.only(top: ScreenUtil.instance.setHeight(30)),
-                  child: SU.getText(
-                      "立即登录", SU.color333, SU.font17, FontWeight.bold),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, "login");
+                    },
+                    child: SU.getText(
+                        "立即登录", SU.color333, SU.font17, FontWeight.bold),
+                  ),
                 )
               ],
             ),
@@ -163,10 +182,39 @@ class DrawerPanel extends StatelessWidget {
   }
 }
 
+class Loading extends StatelessWidget {
+  final double width;
+  final double height;
+
+  const Loading({
+    Key key,
+    this.width,
+    this.height,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: width != null ? width : ScreenUtil.instance.setWidth(30),
+      height: height != null ? height : ScreenUtil.instance.setWidth(30),
+      alignment: Alignment.center,
+      child: SizedBox(
+        width: ScreenUtil.instance.setWidth(30),
+        height: ScreenUtil.instance.setWidth(30),
+        child: CircularProgressIndicator(
+          strokeWidth: 2,
+        ),
+      ),
+    );
+  }
+}
+
 class BankCard extends StatelessWidget {
+  final BankCardModel card;
+
   const BankCard({
     Key key,
-    @required BankCardModel card,
+    @required this.card,
   }) : super(key: key);
 
   @override
@@ -185,30 +233,32 @@ class BankCard extends StatelessWidget {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  Image.asset(
-                    "assets/images/湛江商行.png",
+                  CachedNetworkImage(
+                    imageUrl: card.logo,
                     width: ScreenUtil.instance.setWidth(58),
                     height: ScreenUtil.instance.setWidth(58),
+                    placeholder: (context, url) => new Loading(),
+                    errorWidget: (context, url, error) => Icon(Icons.error),
                   ),
                   Padding(
                     padding: EdgeInsets.only(
                       left: ScreenUtil.instance.setWidth(22),
                       right: ScreenUtil.instance.setWidth(16),
                     ),
-                    child: SU.getText(
-                        "招商银行", Colors.white, SU.font17, FontWeight.bold),
+                    child: SU.getText(card.bankName, Colors.white, SU.font17,
+                        FontWeight.bold),
                   ),
-                  SU.getText("金卡", Colors.white, SU.font14),
+                  SU.getText(card.type, Colors.white, SU.font14),
                 ],
               ),
-              SU.getText("还款日：每月15号", Colors.white, SU.font12)
+              SU.getText("还款日：每月${card.payDay}号", Colors.white, SU.font12)
             ],
           ),
           Container(
             width: double.infinity,
             padding: EdgeInsets.only(top: ScreenUtil.instance.setHeight(28)),
             child: Text(
-              "6548   ****   ****   8888",
+              card.cardNum,
               textAlign: TextAlign.left,
               style: TextStyle(
                 color: Colors.white,
@@ -231,7 +281,7 @@ class BankCard extends StatelessWidget {
                 Padding(
                   padding:
                       EdgeInsets.only(left: ScreenUtil.instance.setWidth(12)),
-                  child: SU.getText("海底捞50元购100元电子权益", Colors.white, SU.font12),
+                  child: SU.getText(card.rights[0], Colors.white, SU.font12),
                 ),
               ],
             ),
@@ -249,11 +299,11 @@ class BankCard extends StatelessWidget {
                   Padding(
                     padding:
                         EdgeInsets.only(left: ScreenUtil.instance.setWidth(12)),
-                    child: SU.getText("境外消费2%返现", Colors.white, SU.font12),
+                    child: SU.getText(card.rights[1], Colors.white, SU.font12),
                   ),
                 ],
               ),
-              SU.getText("YOUNG卡白色青年版", Colors.white, SU.font12),
+              SU.getText(card.title, Colors.white, SU.font12),
             ],
           ),
         ],
@@ -282,7 +332,7 @@ class CardPanel extends StatelessWidget {
         top: ScreenUtil.instance.setHeight(26),
         left: ScreenUtil.instance.setHeight(26),
         right: ScreenUtil.instance.setHeight(26),
-        bottom: ScreenUtil.instance.setHeight(61),
+        bottom: ScreenUtil.instance.setWidth(61),
       ),
       height: ScreenUtil.instance.setHeight(328),
       child: child,

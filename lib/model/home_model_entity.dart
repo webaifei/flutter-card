@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'dart:core';
 import 'dart:io';
 
+import 'package:card_xiaomei/common/API.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:card_xiaomei/model/BankCardModel.dart';
@@ -23,6 +25,16 @@ class HomeModelEntity extends Model {
       });
     }
   }
+
+  initCardListFromJson(Map<String, dynamic> json) {
+    if (json['list'] != null) {
+      this.cardList = new List<BankCardModel>();
+      (json['list'] as List).forEach((v) {
+        this.cardList.add(new BankCardModel.fromJson(v));
+      });
+    }
+  }
+
   static HomeModelEntity of(BuildContext context) =>
       ScopedModel.of<HomeModelEntity>(context);
 
@@ -34,18 +46,24 @@ class HomeModelEntity extends Model {
     return data;
   }
 
+  addCard(BankCardModel cardItem) {
+    cardList.add(cardItem);
+    notifyListeners();
+  }
+
   // 封装CRUD 操作
-  fetchCardList() async {
+  fetchCardListOld() async {
     // fetch api
     HttpClient httpClient = new HttpClient();
     // 忽略https证书检测
-    httpClient.badCertificateCallback = (X509Certificate cert, String host, int port) {
+    httpClient.badCertificateCallback =
+        (X509Certificate cert, String host, int port) {
       return true;
     };
     Uri url = Uri(
         scheme: "https",
-        host: "easy-mock.com",
-        path: "/mock/5dc8c44a65dec35bd6e86100/kxm/getCardList");
+        host: "raw.githubusercontent.com",
+        path: "/webaifei/flutter-card/master/lib/json/cardList.json");
 
     HttpClientRequest request = await httpClient.getUrl(url);
     // 添加自定义请求头
@@ -60,6 +78,19 @@ class HomeModelEntity extends Model {
     // 设置cardList
     // notify rerender
   }
+
+  fetchCardList() async {
+    try {
+      Response res = await API.getInstance().get("/lib/json/cardList.json");
+      Map<String, dynamic> data = res.data["data"];
+      initCardListFromJson(data);
+      notifyListeners();
+      return data;
+    } catch (err) {
+      print(err);
+      //网络错误
+      //业务逻辑错误
+      //toast
+    }
+  }
 }
-
-

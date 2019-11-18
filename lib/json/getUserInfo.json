@@ -1,0 +1,9 @@
+{
+  "code": 1,
+  "msg": "ok",
+  "data": {
+    "uname": "TK king",
+    "avatar": "https://flutter.cn/assets/flutter-lockup-4cb0ee072ab312e59784d9fbf4fb7ad42688a7fdaea1270ccf6bbf4f34b7e03f.svg",
+    "mobile": "150****9825"
+  }
+}

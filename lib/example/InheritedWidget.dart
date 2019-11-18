@@ -6,29 +6,27 @@ import 'package:flutter/material.dart';
 /// 3. 在子组件中通过静态方法获取到当前子组件中的祖先组件实例 从而获取共享状态和对应操作
 ///
 
-
 class ShareDataWidget extends InheritedWidget {
-  final updateCount;
-
-  ShareDataWidget({Widget child, this.data = const {"count": 0},  this.updateCount})
+  ShareDataWidget({Widget child, this.data = const {"count": 0}})
       : super(child: child);
 
   Map data; // 共享的数据
+  updateCount() {
+    data["count"]++;
+  }
 
   // 提供静态方法 获取组件的共享数据
   static ShareDataWidget of(BuildContext context) {
-//    return context.inheritFromWidgetOfExactType(ShareDataWidget);
+    return context.inheritFromWidgetOfExactType(ShareDataWidget);
     // 这个不会将祖先组件和当前组件绑定依赖关系 子组件的didChangeDependencies 不会触发
-    return context
-        .ancestorInheritedElementForWidgetOfExactType(ShareDataWidget)
-        .widget;
+//    return context.ancestorInheritedElementForWidgetOfExactType(ShareDataWidget).widget;
   }
 
   // 通知依赖共享状态的子树
   @override
   bool updateShouldNotify(ShareDataWidget oldWidget) {
     // 忽略判断
-    return true;
+    return false;
   }
 }
 
@@ -38,14 +36,6 @@ class InheritedWidgetDemo extends StatefulWidget {
 }
 
 class _InheritedWidgetDemoState extends State<InheritedWidgetDemo> {
-  int count = 0;
-
-  void updateCount() {
-    setState(() {
-      count++;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     const keyName = "count";
@@ -53,8 +43,6 @@ class _InheritedWidgetDemoState extends State<InheritedWidgetDemo> {
       body: SafeArea(
         child: ShareDataWidget(
           // map的key可以是变量 和js中不同（js中需要用[]）
-          data: {keyName: count},
-          updateCount: updateCount,
           child: Column(
             children: <Widget>[
               Padding(
@@ -63,11 +51,17 @@ class _InheritedWidgetDemoState extends State<InheritedWidgetDemo> {
               TestStateless(),
               TestOfStateful(),
               RaisedButton(
+                child: Icon(Icons.keyboard),
+                onPressed: () {
+                  ShareDataWidget.of(context).updateCount();
+                },
+              ),
+              RaisedButton(
                 child: Icon(Icons.add),
                 onPressed: () {
-                  setState(() {
-                    count++;
-                  });
+//                  setState(() {
+//                    count++;
+//                  });
                 },
               )
             ],
@@ -102,7 +96,7 @@ class _TestOfStatefulState extends State<TestOfStateful> {
           ),
           RaisedButton(
             child: Text("inner button add+"),
-            onPressed: (){
+            onPressed: () {
               ShareDataWidget.of(context).updateCount();
             },
           )

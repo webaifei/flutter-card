@@ -1,0 +1,49 @@
+{
+  "code": 1,
+  "msg": "ok",
+  "data": {
+    "bankList": [
+      {
+        "logo": "https://p.51credit.com/bos/img/2017/07/11/0517a1a727e04083a660ac7ed7274d7c.png",
+        "title": "中信银行",
+        "id": "001"
+      },
+      {
+        "logo": "https://p.51credit.com/bos/img/2017/07/11/a541fa5c223f441b8c7eb8b8aa145ff7.png",
+        "title": "招商银行",
+        "id": "002"
+      },
+      {
+        "logo": "https://p.51credit.com/bos/img/2018/09/04/b34f5909700f425c92e655a67d85c520.png",
+        "title": "光大银行",
+        "id": "003"
+      },
+      {
+        "logo": "https://p.51credit.com/bos/img/2018/09/04/ec315e48b90e4b13b361615a45c3882c.png",
+        "title": "兴业银行",
+        "id": "004"
+      },
+      {
+        "logo": "https://p.51credit.com/bos/img/2018/08/20/c8f080106e454f9da23c73f281254b72.png",
+        "title": "花旗银行",
+        "id": "005"
+      },
+      {
+        "logo": "https://p.51credit.com/bos/img/2019/10/17/8ea7717835364efc8a90d1af41e26623.png",
+        "title": "恒丰银行",
+        "id": "006"
+      },
+      {
+        "logo": "https://p.51credit.com/bos/img/2019/01/15/8e5d8e3f34fb42618ad05c43ea5ddf3e.png",
+        "title": "招行借记卡",
+        "id": "007"
+      },
+      {
+        "logo": "https://p.51credit.com/bos/img/2018/09/04/2e427abdaa81470a945e656c4105b32d.png",
+        "title": "上海银行",
+        "id": "008"
+      }
+
+    ]
+  }
+}

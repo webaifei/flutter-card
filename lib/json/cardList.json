@@ -2,6 +2,34 @@
   "code": 1,
   "msg": "ok",
   "data": {
-    "list": []
+    "list": [{
+      "cardId": "98989we",
+      "logo": "https://p.51credit.com/bos/img/2017/07/11/0517a1a727e04083a660ac7ed7274d7c.png",
+      "bankName": "中信银行",
+      "title": "YOUNG卡白色青年版",
+      "type": "金卡",
+      "payDay": "15",
+      "cardNum": "6548   ****   ****   8888",
+      "rights": [
+        "海底捞50元购100元电子权益",
+        "境外消费2%返现"
+      ]
+    },
+      {
+        "cardId": "98989we",
+        "logo": "https://p.51credit.com/bos/img/2018/09/04/b34f5909700f425c92e655a67d85c520.png",
+        "bankName": "光大银行",
+        "title": "YOUNG卡白色青年版",
+        "type": "银卡",
+        "payDay": "13",
+        "cardNum": "6548   ****   ****   8888",
+        "rights": [
+          "海底捞50元购100元电子权益",
+          "境外消费2%返现"
+        ]
+      }
+
+    ]
+
   }
 }
