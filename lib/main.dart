@@ -3,13 +3,9 @@ import 'package:card_xiaomei/model/card_tyes_list_entity.dart';
 import 'package:card_xiaomei/model/home_model_entity.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:card_xiaomei/ui/page/Login.dart';
 import 'package:card_xiaomei/ui/page/Home.dart';
-import 'package:card_xiaomei/ui/page/SelectCard.dart';
-import 'package:card_xiaomei/ui/page/AddCard.dart';
 import 'package:flutter/rendering.dart';
 import 'package:oktoast/oktoast.dart';
-import 'package:scoped_model/scoped_model.dart';
 
 import 'common/RouteManage.dart';
 import 'common/setupLocator.dart';
@@ -32,7 +28,6 @@ class MyApp extends StatelessWidget {
             primaryColor: Colors.white,
           ),
           home: HomePage(),
-          routes: {"selectCard": (context) => SelectCardPage()},
           onGenerateRoute: Router.generateRoute),
     );
   }

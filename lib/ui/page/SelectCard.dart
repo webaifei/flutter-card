@@ -15,8 +15,9 @@ import 'Home.dart';
 /// 添加卡片
 class SelectCardPage extends StatefulWidget {
   CardTyesListEntity cardTyesListEntity = locator.get<CardTyesListEntity>();
+  int index;
 
-  SelectCardPage();
+  SelectCardPage({this.index});
 
   @override
   _SelectCardPageState createState() => _SelectCardPageState();
@@ -29,11 +30,16 @@ class _SelectCardPageState extends State<SelectCardPage> {
 
   int typeSelect = 0;
 
-  int cardSelect = 0;
+  int cardSelect;
 
   @override
   void initState() {
     super.initState();
+    setState(() {
+      cardSelect = widget.index;
+    });
+
+    print("SelectCard.dart init");
     widget.cardTyesListEntity.fetchCardTypes();
     widget.cardTyesListEntity.fetchAllCardList();
   }
@@ -42,6 +48,7 @@ class _SelectCardPageState extends State<SelectCardPage> {
     setState(() {
       cardSelect = index;
     });
+    Navigator.of(context).pop(widget.cardTyesListEntity.list[index].bankName);
   }
 
   @override

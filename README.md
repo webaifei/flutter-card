@@ -1,9 +1,7 @@
 # 卡小秘 flutter 版本
 
 ## todo
-1. 输入组件封装
 2. 网络请求loading封装
-3. 
 
 - UI
   - [ ] 开屏页
@@ -70,3 +68,55 @@ oktoast: ^2.1.7
   launch_review: ^2.0.0
   open_file: ^2.0.3
 ``` 
+
+
+
+### PPT
+
+两次
+#### flutter
+0. 从多端框架说起
+    - 什么是跨平台
+    - 为啥需要
+    - 怎么实现的（几种方案）
+    
+1. flutter是啥？
+基于dart，（起初用来代替javascript，nodejs的强势崛起）
+dart的野心勃勃：dart-web、flutter、dart-vm
+2. 优势
+    - Fast Development
+        - 开发过程中基于Dart JIT 编译模式
+        - 内置了大量丰富的组件
+        - 一套代码同时兼容多端（IOS、Android、Fuchsia）
+        
+    - Expressive and Flexible UI
+    
+    - Native Performance
+        - 媲美原生的性能表现
+        
+3. talk is cheap, show me code
+   - Hot reload
+        - 有些修改无法更新
+        - 有时候不怎么好使
+        - 重新启动（也很快，通常小于1s）
+        - 简单说下 热更新的原理：snapshot,对比js，android等
+   - 内置组件
+4. flutter 架构（跨平台、性能）
+   
+
+5. 如此好，怎么用
+   > 总的来说，成本比较高
+   - 学习一门新的语言 Dart
+   - 学习flutter
+   - 搭建平台相关能力的package库：相册、OCR、上报、等等
+   - 和现有app混合开发方案
+   - 发布、构建系统
+   - 线上稳定性监控系统
+   - 热更新方案
+  
+   --------
+   
+   - 大型团队，分工明确，技术能力足够。
+   - 小型团队持续学习，等待时机，框架、社区的足够成熟。
+
+

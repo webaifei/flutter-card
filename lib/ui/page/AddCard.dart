@@ -5,8 +5,6 @@ import 'package:card_xiaomei/model/Bank.dart';
 import 'package:card_xiaomei/model/BankCardModel.dart';
 import 'package:card_xiaomei/model/bank_list_entity.dart';
 import 'package:card_xiaomei/model/home_model_entity.dart';
-import 'package:card_xiaomei/ui/page/Home.dart';
-import 'package:card_xiaomei/ui/page/SelectCard.dart';
 import 'package:card_xiaomei/ui/widget/Button.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
@@ -37,24 +35,18 @@ class _AddCardPageState extends State<AddCardPage> {
     "bankId": "",
     "billDateStr": "",
     "billDate": "",
-    "amount": ""
+    "amount": "",
+    "cardName": ""
   };
-  String bankName = "";
 
   @override
   void initState() {
     getBankList();
     super.initState();
-    Future.delayed(new Duration(milliseconds: 3000)).then((res) {
-      setState(() {
-        bankName = "招商银行";
-      });
-    });
   }
 
   @override
   Widget build(BuildContext context) {
-    print("----build----");
     ScreenUtil.instance = ScreenUtil(width: 750, height: 1334)..init(context);
 
     return Scaffold(
@@ -81,7 +73,7 @@ class _AddCardPageState extends State<AddCardPage> {
                         text: "银行",
                         readOnly: true,
                         hintText: "请选择银行",
-                        inputValue: bankName,
+                        inputValue: cardInfo["bankName"],
                         onTap: () {
                           showCupertinoModalPopup(
                             context: context,
@@ -93,13 +85,19 @@ class _AddCardPageState extends State<AddCardPage> {
                         text: "卡名称",
                         hintText: "请选择卡片",
                         readOnly: true,
+                        inputValue: cardInfo["cardName"],
                         suffix: Image.asset(
                           "assets/images/right_arrow_circle.png",
                           width: ScreenUtil.instance.setWidth(24),
                           height: ScreenUtil.instance.setWidth(24),
                         ),
-                        onTap: () {
-                          Navigator.of(context).pushNamed("selectCard");
+                        onTap: () async {
+                          final result = await Navigator.of(context)
+                              .pushNamed("selectCard", arguments: 1);
+                          print("return result!");
+                          setState(() {
+                            cardInfo["cardName"] = result;
+                          });
                         },
                       ),
                       new Input(
@@ -107,6 +105,11 @@ class _AddCardPageState extends State<AddCardPage> {
                         hintText: "请输入卡号",
                         keyboardType: TextInputType.number,
                         inputValue: cardInfo["cardNo"],
+                        onChange: (String text) {
+                          setState(() {
+                            cardInfo["cardNo"] = text;
+                          });
+                        },
                       ),
                       new Input(
                         text: "还款日",
@@ -281,10 +284,6 @@ class _AddCardPageState extends State<AddCardPage> {
     switch (type) {
       case PICKER_TYPE.BANK:
         cardInfo["bankName"] = bankList[index].title;
-
-        setState(() {
-          bankName = bankList[index].title;
-        });
         cardInfo["bankId"] = bankList[index].id;
         break;
       case PICKER_TYPE.BILL:
@@ -411,11 +410,12 @@ class _InputState extends State<Input> {
               onTap: widget.onTap,
               child: widget.readOnly
                   ? Text(
-                      widget.inputValue != ""
+                      widget.inputValue != "" && widget.inputValue != null
                           ? widget.inputValue
                           : widget.hintText,
                       style: TextStyle(
-                        color: SU.color333,
+                        color:
+                            widget.inputValue != "" ? SU.color333 : SU.colorccc,
                         fontSize: SU.font16,
                       ),
                     )
@@ -427,7 +427,12 @@ class _InputState extends State<Input> {
                         fontSize: SU.font16,
                       ),
                       decoration: InputDecoration(
-                          border: InputBorder.none, hintText: widget.hintText),
+                          border: InputBorder.none,
+                          hintText: widget.hintText,
+                          hintStyle: TextStyle(
+                            color: SU.colorccc,
+                            fontSize: SU.font16,
+                          )),
                     ),
             ),
           ),

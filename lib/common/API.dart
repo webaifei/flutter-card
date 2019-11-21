@@ -6,7 +6,7 @@ import 'package:flutter/foundation.dart';
 class API {
   static BaseOptions baseOptions = new BaseOptions(
       receiveTimeout: 10 * 1000,
-      baseUrl: "https://raw.githubusercontent.com/webaifei/flutter-card/master",
+      baseUrl: "https://gitlab.com/webaifei/flutter-card/raw/master",
       headers: {
         "token": "" // 如何处理
       });
